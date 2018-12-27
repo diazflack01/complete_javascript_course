@@ -18,12 +18,16 @@ function getElementFromClass(className){
 
 // Generate random number 1 upto max variable
 function generateRandomNumber(max){
-    return (Math.floor(Math.random()) * max) + 1;
+    return (Math.floor(Math.random() * max)) + 1;
 }
 
 const rollButtonElement = getElementFromClass('btn-roll');
+const maxDiceNumber = 6;
+const diceElement = getElementFromClass('dice');
 rollButtonElement.addEventListener('click', function(){
-    //
+    const randNum = generateRandomNumber(maxDiceNumber);
+    
+    diceElement.setAttribute('src', `dice-${randNum}.png`);
 })
 
 // Hold Button -> btn-hold
