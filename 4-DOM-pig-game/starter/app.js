@@ -52,7 +52,11 @@ rollButtonElement.addEventListener('click', function(){
 // Hold Button -> btn-hold
 const holdButtonElement = getElementFromClass('btn-hold');
 holdButtonElement.addEventListener('click', function(){
-    //
+    // Update player score and reset current score to 0
+    const currentElement = getElementFromId(`current-${activePlayer}`);
+    const scoreElement = getElementFromId(`score-${activePlayer}`);
+    scoreElement.textContent = Number(scoreElement.textContent) + Number(currentElement.textContent);
+    currentElement.textContent = 0;
 })
 
 // New Game -> btn-new
