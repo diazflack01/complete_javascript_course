@@ -10,7 +10,7 @@ GAME RULES:
 */
 
 let activePlayer = 0, isGameOngoing = true;
-const winningScore = 50;
+const winningScore = 100;
 
 function changeActivePlayer(){
     getElementFromClass(`player-${activePlayer}-panel`).classList.remove('active');
@@ -27,6 +27,7 @@ function setWinner(playerId){
     const playerElement = getElementFromId(`name-${playerId}`);
     playerElement.textContent = `WINNER!`;
     playerElement.classList.add(`winner`);
+    diceElement.style.display = `none`;
 }
 
 // Event listeners
@@ -98,14 +99,16 @@ newGameButtonElement.addEventListener('click', function(){
 })
 
 function initializeGame(){
-    activePlayer = 0;
-    isGameOngoing = true;
-
     for(let playerId = 0; playerId < 2; playerId++){
         getElementFromId(`score-${playerId}`).textContent = 0;
+        getElementFromId(`name-${playerId}`).classList.remove(`winner`)
+        getElementFromId(`name-${playerId}`).textContent = `PLAYER-${Number(playerId)+1}`;
         getElementFromClass(`player-${playerId}-panel`).classList.remove('active');
         getElementFromId(`current-${activePlayer}`).textContent = 0;
     }
 
+    activePlayer = 0;
+    isGameOngoing = true;
     getElementFromClass(`player-${activePlayer}-panel`).classList.add('active');
+    diceElement.style.display = `block`;
 }
