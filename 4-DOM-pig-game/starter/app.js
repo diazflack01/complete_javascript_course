@@ -10,13 +10,19 @@ GAME RULES:
 */
 
 let activePlayer = 0;
-const winningScore = 20;
+const winningScore = 1000;
 
-function changeActivePlayer(){ activePlayer = activePlayer === 0 ? 1 : 0; }
+function changeActivePlayer(){
+    getElementFromClass(`player-${activePlayer}-panel`).classList.remove('active');
+    activePlayer = activePlayer === 0 ? 1 : 0;
+    getElementFromClass(`player-${activePlayer}-panel`).classList.add('active');
+}
+
 function isWinner(playerId){
     const scoreElement = getElementFromId(`score-${activePlayer}`);
     return Number(scoreElement.textContent) >= winningScore;
 }
+
 function setWinner(playerId){
     const playerElement = getElementFromId(`name-${activePlayer}`);
     playerElement.textContent = `WINNER!`;
