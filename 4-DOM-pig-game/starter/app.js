@@ -11,6 +11,8 @@ GAME RULES:
 
 let activePlayer = 0;
 
+function changeActivePlayer(){ activePlayer = activePlayer === 0 ? 1 : 0; }
+
 // Event listeners
 function getElementFromClass(className){
     return document.querySelector(`.${className}`);
@@ -43,6 +45,7 @@ rollButtonElement.addEventListener('click', function(){
         const scoreElement = getElementFromId(`score-${activePlayer}`);
         scoreElement.textContent = Number(scoreElement.textContent) + Number(currentElement.textContent);
         currentElement.textContent = 0;
+        changeActivePlayer();
     } else {
         // Update current score
         currentElement.textContent =  Number(currentElement.textContent) + randNum;
@@ -57,6 +60,7 @@ holdButtonElement.addEventListener('click', function(){
     const scoreElement = getElementFromId(`score-${activePlayer}`);
     scoreElement.textContent = Number(scoreElement.textContent) + Number(currentElement.textContent);
     currentElement.textContent = 0;
+    changeActivePlayer();
 })
 
 // New Game -> btn-new
