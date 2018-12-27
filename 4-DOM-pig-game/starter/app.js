@@ -10,8 +10,18 @@ GAME RULES:
 */
 
 let activePlayer = 0;
+const winningScore = 20;
 
 function changeActivePlayer(){ activePlayer = activePlayer === 0 ? 1 : 0; }
+function isWinner(playerId){
+    const scoreElement = getElementFromId(`score-${activePlayer}`);
+    return Number(scoreElement.textContent) >= winningScore;
+}
+function setWinner(playerId){
+    const playerElement = getElementFromId(`name-${activePlayer}`);
+    playerElement.textContent = `WINNER!`;
+    playerElement.classList.add(`winner`);
+}
 
 // Event listeners
 function getElementFromClass(className){
@@ -45,6 +55,10 @@ rollButtonElement.addEventListener('click', function(){
         const scoreElement = getElementFromId(`score-${activePlayer}`);
         scoreElement.textContent = Number(scoreElement.textContent) + Number(currentElement.textContent);
         currentElement.textContent = 0;
+        if(isWinner(activePlayer)){
+            setWinner(activePlayer);
+            return;
+        }
         changeActivePlayer();
     } else {
         // Update current score
@@ -60,6 +74,10 @@ holdButtonElement.addEventListener('click', function(){
     const scoreElement = getElementFromId(`score-${activePlayer}`);
     scoreElement.textContent = Number(scoreElement.textContent) + Number(currentElement.textContent);
     currentElement.textContent = 0;
+    if(isWinner(activePlayer)){
+        setWinner(activePlayer);
+        return;
+    }
     changeActivePlayer();
 })
 
