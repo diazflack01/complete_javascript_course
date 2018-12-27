@@ -9,9 +9,15 @@ GAME RULES:
 
 */
 
+let activePlayer = 0;
+
 // Event listeners
 function getElementFromClass(className){
     return document.querySelector(`.${className}`);
+}
+
+function getElementFromId(id){
+    return document.getElementById(id);
 }
 
 // Roll Dice Button -> btn-roll
@@ -28,6 +34,9 @@ rollButtonElement.addEventListener('click', function(){
     const randNum = generateRandomNumber(maxDiceNumber);
     
     diceElement.setAttribute('src', `dice-${randNum}.png`);
+
+    const currentElement = getElementFromId(`current-${activePlayer}`);
+    currentElement.textContent =  Number(currentElement.textContent) + randNum;
 })
 
 // Hold Button -> btn-hold
