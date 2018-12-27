@@ -33,10 +33,20 @@ const diceElement = getElementFromClass('dice');
 rollButtonElement.addEventListener('click', function(){
     const randNum = generateRandomNumber(maxDiceNumber);
     
+    // Update dice image
     diceElement.setAttribute('src', `dice-${randNum}.png`);
 
     const currentElement = getElementFromId(`current-${activePlayer}`);
-    currentElement.textContent =  Number(currentElement.textContent) + randNum;
+
+    //  Update score and reset current to 0
+    if(randNum === 1){
+        const scoreElement = getElementFromId(`score-${activePlayer}`);
+        scoreElement.textContent = Number(scoreElement.textContent) + Number(currentElement.textContent);
+        currentElement.textContent = 0;
+    } else {
+        // Update current score
+        currentElement.textContent =  Number(currentElement.textContent) + randNum;
+    }
 })
 
 // Hold Button -> btn-hold
