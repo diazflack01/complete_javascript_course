@@ -9,8 +9,8 @@ GAME RULES:
 
 */
 
-let activePlayer = 0;
-const winningScore = 1000;
+let activePlayer = 0, isGameOngoing = true;
+const winningScore = 50;
 
 function changeActivePlayer(){
     getElementFromClass(`player-${activePlayer}-panel`).classList.remove('active');
@@ -19,12 +19,12 @@ function changeActivePlayer(){
 }
 
 function isWinner(playerId){
-    const scoreElement = getElementFromId(`score-${activePlayer}`);
+    const scoreElement = getElementFromId(`score-${playerId}`);
     return Number(scoreElement.textContent) >= winningScore;
 }
 
 function setWinner(playerId){
-    const playerElement = getElementFromId(`name-${activePlayer}`);
+    const playerElement = getElementFromId(`name-${playerId}`);
     playerElement.textContent = `WINNER!`;
     playerElement.classList.add(`winner`);
 }
@@ -49,26 +49,29 @@ const rollButtonElement = getElementFromClass('btn-roll');
 const maxDiceNumber = 6;
 const diceElement = getElementFromClass('dice');
 rollButtonElement.addEventListener('click', function(){
-    const randNum = generateRandomNumber(maxDiceNumber);
+    if(isGameOngoing){
+        const randNum = generateRandomNumber(maxDiceNumber);
     
-    // Update dice image
-    diceElement.setAttribute('src', `dice-${randNum}.png`);
+        // Update dice image
+        diceElement.setAttribute('src', `dice-${randNum}.png`);
 
-    const currentElement = getElementFromId(`current-${activePlayer}`);
+        const currentElement = getElementFromId(`current-${activePlayer}`);
 
-    //  Update score and reset current to 0
-    if(randNum === 1){
-        const scoreElement = getElementFromId(`score-${activePlayer}`);
-        scoreElement.textContent = Number(scoreElement.textContent) + Number(currentElement.textContent);
-        currentElement.textContent = 0;
-        if(isWinner(activePlayer)){
-            setWinner(activePlayer);
-            return;
+        //  Update score and reset current to 0
+        if(randNum === 1){
+            const scoreElement = getElementFromId(`score-${activePlayer}`);
+            scoreElement.textContent = Number(scoreElement.textContent) + Number(currentElement.textContent);
+            currentElement.textContent = 0;
+            if(isWinner(activePlayer)){
+                setWinner(activePlayer);
+                isGameOngoing = false;
+                return;
+            }
+            changeActivePlayer();
+        } else {
+            // Update current score
+            currentElement.textContent =  Number(currentElement.textContent) + randNum;
         }
-        changeActivePlayer();
-    } else {
-        // Update current score
-        currentElement.textContent =  Number(currentElement.textContent) + randNum;
     }
 })
 
@@ -82,6 +85,7 @@ holdButtonElement.addEventListener('click', function(){
     currentElement.textContent = 0;
     if(isWinner(activePlayer)){
         setWinner(activePlayer);
+        isGameOngoing = false;
         return;
     }
     changeActivePlayer();
@@ -90,5 +94,18 @@ holdButtonElement.addEventListener('click', function(){
 // New Game -> btn-new
 const newGameButtonElement = getElementFromClass('btn-new');
 newGameButtonElement.addEventListener('click', function(){
-    //
+    initializeGame();
 })
+
+function initializeGame(){
+    activePlayer = 0;
+    isGameOngoing = true;
+
+    for(let playerId = 0; playerId < 2; playerId++){
+        getElementFromId(`score-${playerId}`).textContent = 0;
+        getElementFromClass(`player-${playerId}-panel`).classList.remove('active');
+        getElementFromId(`current-${activePlayer}`).textContent = 0;
+    }
+
+    getElementFromClass(`player-${activePlayer}-panel`).classList.add('active');
+}
